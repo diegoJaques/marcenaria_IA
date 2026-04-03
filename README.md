@@ -1,4 +1,4 @@
-# 🪵 MarcenAI
+#  MarcenAI
 
 **Sistema Inteligente de Geração de Projetos de Marcenaria com IA**
 
@@ -8,7 +8,7 @@ Polo: Anhanguera Nova Odessa
 
 ---
 
-## 📋 Sobre o Projeto
+##  Sobre o Projeto
 
 MarcenAI é uma aplicação que auxilia marceneiros a gerar visualizações fotorrealísticas de projetos de móveis usando Inteligência Artificial. O sistema foi desenvolvido pensando em profissionais que não têm conhecimento técnico, oferecendo uma interface extremamente simples e intuitiva.
 
@@ -31,7 +31,7 @@ MarcenAI resolve isso através de:
 
 ---
 
-## 🏗️ Arquitetura
+##  Arquitetura
 
 ```
 ┌─────────────────────────────────────┐
@@ -58,7 +58,7 @@ MarcenAI resolve isso através de:
 
 ---
 
-## 🚀 Como Rodar
+##  Como Rodar
 
 ### Pré-requisitos
 
@@ -96,7 +96,7 @@ MarcenAI resolve isso através de:
 
 ---
 
-## 📦 Serviços
+##  Serviços
 
 | Serviço | Porta | Descrição |
 |---------|-------|-----------|
@@ -216,126 +216,4 @@ O projeto foi desenvolvido considerando que o usuário final (marceneiro) **NÃO
 
 ---
 
-## 🎓 Contexto Acadêmico
 
-### Programa de Extensão
-
-- **Programa:** Ação e Difusão Cultural
-- **Objetivo:** Utilizar tecnologia para auxiliar profissionais de atividades culturais/artesanais
-- **Impacto:** Democratizar acesso a ferramentas de IA para artesãos
-
-### Competências Aplicadas
-
-1. ✅ Avaliar e utilizar ferramentas adequadas (OpenAI, Docker, React)
-2. ✅ Gerenciar projeto de software (PDCA, SDS)
-3. ✅ Especificar requisitos e projetar interfaces (IHC)
-
-### Conteúdos
-
-- ✅ Processo de software
-- ✅ Análise e projeto de sistemas
-- ✅ Engenharia de requisitos
-- ✅ Interação Humano-Computador (IHC)
-- ✅ Gerência de projetos
-- ✅ Processos de negócio
-
-### ODS (Objetivos de Desenvolvimento Sustentável)
-
-- **ODS 8:** Trabalho Decente e Crescimento Econômico
-- **ODS 9:** Indústria, Inovação e Infraestrutura
-- **ODS 11:** Cidades e Comunidades Sustentáveis
-
----
-
-## 📝 Estrutura do Projeto
-
-```
-marcenai/
-├── .claude                    # Contexto do projeto
-├── docker-compose.yml         # Orquestração de serviços
-├── .env.example              # Exemplo de variáveis de ambiente
-├── README.md                 # Este arquivo
-│
-├── backend/                  # API FastAPI
-│   ├── app/
-│   │   ├── core/            # Configurações e database
-│   │   ├── models/          # Modelos SQLAlchemy e Schemas
-│   │   ├── routes/          # Endpoints da API
-│   │   ├── services/        # Lógica de negócio
-│   │   └── main.py          # Aplicação principal
-│   ├── Dockerfile
-│   └── requirements.txt
-│
-├── frontend/                 # Interface React
-│   ├── src/
-│   │   ├── components/      # Componentes reutilizáveis
-│   │   ├── pages/           # Páginas da aplicação
-│   │   ├── services/        # Comunicação com API
-│   │   └── App.jsx          # Componente raiz
-│   ├── Dockerfile
-│   └── package.json
-│
-├── docker/                   # Scripts Docker
-│   └── init.sql             # Inicialização do PostgreSQL
-│
-└── docs/                     # Documentação adicional
-    └── SDS.md               # Software Design Specification
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Backend não inicia
-
-```bash
-# Verificar logs
-docker-compose logs backend
-
-# Recriar container
-docker-compose up --build backend
-```
-
-### Erro de conexão com PostgreSQL
-
-```bash
-# Verificar se o container está rodando
-docker-compose ps
-
-# Recriar volumes
-docker-compose down -v
-docker-compose up
-```
-
-### MinIO não aceita uploads
-
-```bash
-# Verificar buckets
-docker-compose exec minio-client mc ls myminio
-
-# Recriar buckets
-docker-compose restart minio-client
-```
-
----
-
-## 📞 Suporte
-
-**Desenvolvedor:** Diego Jaques Tinoco
-**RA:** 38182672
-**Polo:** Anhanguera Nova Odessa
-
----
-
-## 📄 Licença
-
-Projeto Acadêmico - Projeto de Extensão II
-CST em Análise e Desenvolvimento de Sistemas
-
----
-
-## 🙏 Agradecimentos
-
-- Comunidade de marceneiros artesanais
-- OpenAI pela API do DALL-E
-- Professores e orientadores do curso

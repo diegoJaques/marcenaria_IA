@@ -1,11 +1,12 @@
 # Software Design Specification (SDS)
 ## MarcenAI - Sistema de Geração de Projetos de Marcenaria com IA
 
-**Versão:** 1.0
+**Versão:** 1.1.0
 **Data:** 03/04/2026
 **Autor:** Diego Jaques Tinoco (RA: 38182672)
 **Curso:** CST em Análise e Desenvolvimento de Sistemas
 **Componente:** Projeto de Extensão II
+**Repositório GitHub:** https://github.com/diegoJaques/marcenaria_IA
 
 ---
 

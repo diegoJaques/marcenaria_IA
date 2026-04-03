@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  /* Botões grandes e fáceis de clicar */
+  .btn-primary {
+    @apply bg-wood-600 hover:bg-wood-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-200 text-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 px-8 rounded-xl shadow transition-all duration-200 text-lg;
+  }
+
+  /* Cards de opções com ícones grandes */
+  .option-card {
+    @apply bg-white hover:bg-wood-50 border-2 border-gray-200 hover:border-wood-400 rounded-2xl p-6 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .option-card.selected {
+    @apply bg-wood-100 border-wood-600 shadow-md;
+  }
+
+  /* Container principal */
+  .container-main {
+    @apply max-w-4xl mx-auto px-4 py-8;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    @apply animate-spin rounded-full border-4 border-wood-200 border-t-wood-600;
+  }
+}

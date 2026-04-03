@@ -1,0 +1,130 @@
+services:
+  # Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: marcenai-db
+    environment:
+      POSTGRES_USER: marcenai
+      POSTGRES_PASSWORD: marcenai123
+      POSTGRES_DB: marcenai_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - marcenai-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marcenai -d marcenai_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Object Storage MinIO (compatível S3)
+  minio:
+    image: minio/minio:latest
+    container_name: marcenai-storage
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    ports:
+      - "9000:9000"      # API
+      - "9001:9001"      # Console Web
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - marcenai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Cliente MinIO para criar buckets automaticamente
+  minio-client:
+    image: minio/mc:latest
+    container_name: marcenai-minio-setup
+    depends_on:
+      - minio
+    networks:
+      - marcenai-network
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin123;
+      /usr/bin/mc mb myminio/project-images --ignore-existing;
+      /usr/bin/mc mb myminio/temp-images --ignore-existing;
+      /usr/bin/mc anonymous set public myminio/project-images;
+      echo 'Buckets criados com sucesso!';
+      exit 0;
+      "
+
+  # Backend - FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: marcenai-backend
+    environment:
+      # Database
+      DATABASE_URL: postgresql://marcenai:marcenai123@postgres:5432/marcenai_db
+
+      # MinIO
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin123
+      MINIO_BUCKET: project-images
+      MINIO_SECURE: "false"
+
+      # OpenAI
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-your-key-here}
+
+      # App
+      APP_ENV: development
+      DEBUG: "true"
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:5173"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - backend_cache:/root/.cache
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - marcenai-network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: on-failure
+
+  # Frontend - React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: marcenai-frontend
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - marcenai-network
+    command: npm run dev -- --host 0.0.0.0 --port 3000
+    restart: on-failure
+
+volumes:
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
+  backend_cache:
+    driver: local
+
+networks:
+  marcenai-network:
+    driver: bridge
